@@ -1,5 +1,5 @@
 import polars as pl
-from typing import Collection, Iterable, List, Tuple, Optional
+from typing import OrderedDict
 
 class ParseJson:
     """Class to interact and flatten json in Polars DataFrame
@@ -13,7 +13,7 @@ class ParseJson:
         self.conn_str = conn_str
 
 
-    def rename_cols(self, df: pl.DataFrame, keys_and_values: Collection[Iterable]) -> pl.DataFrame:
+    def rename_cols(self, df: pl.DataFrame, keys_and_values: OrderedDict[str, pl.PolarsDataType]) -> pl.DataFrame:
         """Helper function to rename columns in nested structure
         to ensure unique names are preserved
         """
@@ -28,46 +28,39 @@ class ParseJson:
                 )
         return df
 
-    def find_struct_to_explode():
-        for key, val in keys_and_values:
-            if type(val) == pl.List:
-                return key
-        return None
-
-    def find_struct_to_unnest():
-        for key, val in keys_and_values:
-            if type(val) == pl.Struct:
-                return key
-        return None
-
-    def needs_flattening(self, keys_and_values: Collection[Iterable]) -> Tuple:
-        """Helper function to find what columns need exploding and unnesting
+    def find_struct_to_explode(self, keys_and_values: OrderedDict[str, pl.PolarsDataType]) -> str:
+        """Helper function to find structures to explode.
+        Returns first match
         """
-        expl = []
-        unnst = []
         for key, val in keys_and_values:
             if type(val) == pl.List:
-                expl.append(key)
+                return key
+        return None
+
+    def find_struct_to_unnest(self, keys_and_values: OrderedDict[str, pl.PolarsDataType]) -> str:
+        """Helper function to find structures to unnest.
+        Returns first match
+        """
+        for key, val in keys_and_values:
             if type(val) == pl.Struct:
-                unnst.append(key)
-        return expl, unnst
-
-    def explode_cols(
-        self,
-        df: pl.DataFrame,
-        explode_col: str
-    ) -> pl.DataFrame:
-        pass
-
+                return key
+        return None
 
     def unnest_cols(
         self,
         df: pl.DataFrame,
-        unnest_col: List
+        unnest_col: str
     ) -> pl.DataFrame:
+        """Helper function to unnest columns
+        """
         try:
-            df.unnest(unnest_col)
+            df = df.unnest(unnest_col)
         except pl.DuplicateError:
+            try:
+                df = self.rename_cols(df, keys_and_values=df.schema.items())
+            except pl.SchemaError:
+                raise
+        return df
 
     def flatten_df(
         self,
@@ -75,25 +68,15 @@ class ParseJson:
     ) -> pl.DataFrame:
         """Function to explode and unnuest nested json structure in DataFrame
         """
-        expl, unnst = self.needs_flattening(keys_and_values=df.schema.items())
-        if len(expl) == 0 and len(unnst) == 0:
+        explode_col = self.find_struct_to_explode(keys_and_values=df.schema.items())
+        unnest_col = self.find_struct_to_unnest(keys_and_values=df.schema.items())
+        if not explode_col and not unnest_col:
             return df
-        else:
-            if len(unnst) != 0:
-                df = self.unnest_cols(df, unnst)
-                try:
-                    for col in unnst:
-                        df = df.unnest(col)
-                except pl.DuplicateError:
-                    try:
-                        df = self.rename_cols(df, keys_and_values)
-                    except pl.SchemaError:
-                        raise
-                return(self.flatten_df(df))
-            if len(expl) != 0:
-                for col in expl:
-                    df = df.explode(col)
-                return self.flatten_df(df)
+        if explode_col:
+            df = df.explode(explode_col)
+        if unnest_col:
+            df = self.unnest_cols(df, unnest_col)
+        return self.flatten_df(df)
 
     def write_to_db(self, df) -> None:
         df = df.with_columns(
@@ -109,12 +92,7 @@ class ParseJson:
             engine='sqlalchemy'
         )
 
-
-    def run(
-        self,
-        src: str,
-        schema
-    ) -> None:
+    def run(self, src: str, schema ) -> None:
         src_df = pl.read_json(source=src, schema=schema)
         df = self.flatten_df(src_df)
         self.write_to_db(df)
