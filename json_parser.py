@@ -17,8 +17,8 @@ class ParseJson:
         """Helper function to rename columns in nested structure
         to ensure unique names are preserved
         """
-        rename_cols = []
         for key, val in keys_and_values:
+            rename_cols = []
             if type(val) == pl.Struct:
                 for i, _ in enumerate(val.fields):
                     rename_cols.append(key+'_'+val.fields[i].name)
