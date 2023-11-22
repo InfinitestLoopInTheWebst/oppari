@@ -4,15 +4,9 @@ from utils import db_config
 from resources.schema.comments_and_reactions import Comments, PostsAndComments
 from resources.schema.apps_and_websites_off_of_facebook import YourOffFacebookActivity
 from resources.schema.groups import YourCommentsInGroups, YourPostsInGroups
-# from resources.schema.pages_and_profiles import (
-#     PagesAndProfilesYouFollow,
-#     PagesAndProfilesYouRecommended,
-#     PagesAndProfilesYouUnfollowed,
-#     PagesAndProfilesYouLiked,
-#     YourPagesAndProfiles
-# )
-# from resources.schema.polls import PollsYouVotedOn
-# from resources.schema.Posts import Album, YourPosts, YourUncategorizedPhotos, YourVideos
+from resources.schema.pages_and_profiles import PagesAndProfilesYouFollow, PagesAndProfilesYouLiked
+from resources.schema.polls import PollsYouVotedOn
+# from resources.schema.posts import YourPosts, YourUncategorizedPhotos
 # from resources.schema.profile_information import ProfileUpdateHistory
 # from resources.schema.saved_items_and_collections import YourSavedItems
 # from resources.schema.security_and_login_information import AccountActivity
@@ -90,31 +84,16 @@ def parse_posts_in_groups():
 def parse_pages_and_profiles_follow():
     pass
 
-def parse_pages_and_profiles_recommend():
-    pass
-
-def parse_pages_and_profiles_unfollowed():
-    pass
-
 def parse_pages_and_profiles_liked():
     pass
 
-def parse_your_pages_and_profiles():
-    pass
-
 def parse_polls_voted_on():
-    pass
-
-def parse_album():
     pass
 
 def parse_posts():
     pass
 
 def parse_uncategorized_photos():
-    pass
-
-def parse_videos():
     pass
 
 def parse_profile_update_history():
@@ -140,18 +119,12 @@ def parse_all():
     parse_posts_and_comments()
     parse_off_facebook_activity()
     parse_comments_in_groups()
-    # parse_group_membership_activity()
     parse_posts_in_groups()
     parse_pages_and_profiles_follow()
-    parse_pages_and_profiles_recommend()
-    parse_pages_and_profiles_unfollowed()
     parse_pages_and_profiles_liked()
-    parse_your_pages_and_profiles()
     parse_polls_voted_on()
-    parse_album()
     parse_posts()
     parse_uncategorized_photos()
-    parse_videos()
     parse_profile_update_history()
     parse_saved_items()
     parse_account_activity()
