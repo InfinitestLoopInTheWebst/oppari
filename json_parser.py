@@ -78,7 +78,7 @@ class ParseJson:
             df = self.unnest_cols(df, unnest_col)
         return self.flatten_df(df)
 
-    def write_to_db(self, df) -> None:
+    def write_to_db(self, df: pl.DataFrame) -> None:
         df = df.with_columns(
             pl.lit(
                 value=self.table,
@@ -92,7 +92,7 @@ class ParseJson:
             engine='sqlalchemy'
         )
 
-    def run(self, src: str, schema ) -> None:
+    def run(self, src: str, schema: OrderedDict[str, pl.PolarsDataType]) -> None:
         src_df = pl.read_json(source=src, schema=schema)
         df = self.flatten_df(src_df)
         self.write_to_db(df)
