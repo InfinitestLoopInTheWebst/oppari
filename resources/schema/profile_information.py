@@ -26,8 +26,8 @@ class ProfileUpdateHistory:
                                 [
                                     pl.Field(
                                         'data', pl.List(
-                                            [
-                                                pl.Struct(
+                                            pl.Struct(
+                                                [
                                                     pl.Field(
                                                         'media', pl.Struct(
                                                             [
@@ -62,8 +62,8 @@ class ProfileUpdateHistory:
                                                             ]
                                                         )
                                                     )
-                                                )
-                                            ]
+                                                ]
+                                            )
                                         )
                                     )
                                 ]
