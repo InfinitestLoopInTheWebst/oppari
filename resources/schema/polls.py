@@ -35,7 +35,7 @@ class PollsYouVotedOn:
                             )
                         )
                     ),
-                    pl.Field('title', )
+                    pl.Field('title', pl.Utf8)
                 ]
             )
         )
