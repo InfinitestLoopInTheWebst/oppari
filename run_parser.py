@@ -6,12 +6,11 @@ from resources.schema.apps_and_websites_off_of_facebook import YourOffFacebookAc
 from resources.schema.groups import YourCommentsInGroups, YourPostsInGroups
 from resources.schema.pages_and_profiles import PagesAndProfilesYouFollow, PagesAndProfilesYouLiked
 from resources.schema.polls import PollsYouVotedOn
-# from resources.schema.posts import YourPosts, YourUncategorizedPhotos
-# from resources.schema.profile_information import ProfileUpdateHistory
-# from resources.schema.saved_items_and_collections import YourSavedItems
-# from resources.schema.security_and_login_information import AccountActivity
-# from resources.schema.stories import StoryReactions
-# from resources.schema.your_interactions_on_facebook import RecentlyViewed, RecentlyVisited
+from resources.schema.posts import YourPosts, YourUncategorizedPhotos
+from resources.schema.profile_information import ProfileUpdateHistory
+from resources.schema.saved_items_and_collections import YourSavedItems
+from resources.schema.security_and_login_information import AccountActivity
+from resources.schema.your_interactions_on_facebook import RecentlyViewed, RecentlyVisited
 from resources.paths.paths import (
     BasePaths
 )
@@ -80,39 +79,125 @@ def parse_posts_in_groups():
         schema=schema
     )
 
-
 def parse_pages_and_profiles_follow():
-    pass
+    table = 'pages_and_profiles_follow'
+    schema = PagesAndProfilesYouFollow.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        PagesAndProfilesYouFollow.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_pages_and_profiles_liked():
-    pass
+    table = 'pages_and_profiles_liked'
+    schema = PagesAndProfilesYouLiked.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        PagesAndProfilesYouLiked.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_polls_voted_on():
-    pass
+    table = 'polls_voted_on'
+    schema = PollsYouVotedOn.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        PollsYouVotedOn.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_posts():
-    pass
+    table = 'posts'
+    schema = YourPosts.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        YourPosts.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_uncategorized_photos():
-    pass
+    table = 'photos'
+    schema = YourUncategorizedPhotos.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        YourUncategorizedPhotos.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_profile_update_history():
-    pass
+    table = 'profile_update_history'
+    schema = ProfileUpdateHistory.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        ProfileUpdateHistory.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_saved_items():
-    pass
+    table = 'saved_items'
+    schema = YourSavedItems.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        YourSavedItems.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_account_activity():
-    pass
-
-def parse_story_reactions():
-    pass
+    table = 'account_activity'
+    schema = AccountActivity.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        AccountActivity.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_recently_viewed():
-    pass
+    table = 'recently_viewed'
+    schema = RecentlyViewed.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        RecentlyViewed.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_recently_visited():
-    pass
+    table = 'recently_visited'
+    schema = RecentlyVisited.src_schema
+    src = path_utils.get_file_path(
+        raw_data_root,
+        RecentlyVisited.src_data
+    )
+    ParseJson(table=table, conn_str=stg_conn_str).run(
+        src=src,
+        schema=schema
+    )
 
 def parse_all():
     parse_comments()
@@ -128,6 +213,5 @@ def parse_all():
     parse_profile_update_history()
     parse_saved_items()
     parse_account_activity()
-    parse_story_reactions()
     parse_recently_viewed()
     parse_recently_visited()

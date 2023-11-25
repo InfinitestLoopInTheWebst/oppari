@@ -5,9 +5,24 @@ from pathlib import Path
 
 @dataclass
 class YourPosts:
-    src_schema = {
-        ''
-    }
+    src_schema = dict(
+        pl.Struct(
+            [
+                pl.Field('type_INTERNAL', pl.Utf8),
+                pl.Field('timestamp', pl.Int64),
+                pl.Field(
+                    'data', pl.List(
+                        pl.Struct(
+                            [
+                                pl.Field('post', pl.Utf8)
+                            ]
+                        )
+                    )
+                ),
+                pl.Field('title', pl.Utf8)
+            ]
+        )
+    )
     src_data = Path('posts/your_posts_1.json')
 
 
