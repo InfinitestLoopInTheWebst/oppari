@@ -30,7 +30,7 @@ class ParseJson:
 
     def find_struct_to_explode(self, keys_and_values: OrderedDict[str, pl.PolarsDataType]) -> str:
         """Helper function to find structures to explode.
-        Returns first match
+        Returns first eligible
         """
         for key, val in keys_and_values:
             if type(val) == pl.List:
@@ -39,7 +39,7 @@ class ParseJson:
 
     def find_struct_to_unnest(self, keys_and_values: OrderedDict[str, pl.PolarsDataType]) -> str:
         """Helper function to find structures to unnest.
-        Returns first match
+        Returns first eligible
         """
         for key, val in keys_and_values:
             if type(val) == pl.Struct:
