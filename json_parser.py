@@ -2,7 +2,7 @@ import polars as pl
 from typing import OrderedDict
 
 class ParseJson:
-    """Class to interact and flatten json in Polars DataFrame
+    """Class to flatten json in Polars DataFrame
     """
     def __init__(
         self,
