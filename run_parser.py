@@ -11,9 +11,8 @@ from resources.schema.profile_information import ProfileUpdateHistory
 from resources.schema.saved_items_and_collections import YourSavedItems
 from resources.schema.security_and_login_information import AccountActivity
 from resources.schema.your_interactions_on_facebook import RecentlyViewed, RecentlyVisited
-from resources.paths.paths import (
-    BasePaths
-)
+from resources.paths.paths import BasePaths
+
 
 raw_data_root = BasePaths.raw_data_base_path
 stg_conn_str = db_config.get_postgres_connection_string('postgres_staging')
