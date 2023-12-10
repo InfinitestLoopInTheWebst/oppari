@@ -12,7 +12,6 @@ class ParseJson:
         self.table = table
         self.conn_str = conn_str
 
-
     def rename_cols(self, df: pl.DataFrame, keys_and_values: OrderedDict[str, pl.PolarsDataType]) -> pl.DataFrame:
         """Helper function to rename columns in nested structure
         to ensure unique names are preserved
